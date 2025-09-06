@@ -4,7 +4,7 @@ This sophisticated n8n workflow automatically generates and iteratively updates 
 
 The key feature of this workflow is its iterative nature. Instead of generating a new image from scratch each day, it analyzes how your biometric data has changed. It uses Google Gemini to compose precise editing instructions for the Black Forest Labs (BFL) FLUX.1 Kontext image model. FLUX.1 then modifies the previous day's image to reflect the new state, creating a consistent, evolving visual narrative of your health journey.
 
-## bTable of Contents
+## Table of Contents
 Features
 How It Works
 The Digital Garden Metaphor
@@ -21,29 +21,29 @@ Initialization: Generating the First Image (Critical Step)
 Usage and Scheduling
 Workflow JSON
 
-## bFeatures
-### bOura Ring Integration: Automatically fetches Sleep, Readiness, and Activity summaries.
+## Features
+**Oura Ring Integration:** Automatically fetches Sleep, Readiness, and Activity summaries.
 
-Biometric Mapping: Translates complex health data into visual metaphors (the "Digital Garden").
+**Biometric Mapping:** Translates complex health data into visual metaphors (the "Digital Garden").
 
-AI-Powered Prompt Engineering: Uses Google Gemini (via LangChain) to analyze changes and generate precise image editing instructions.
+**AI-Powered Prompt Engineering:** Uses Google Gemini (via LangChain) to analyze changes and generate precise image editing instructions.
 
-Iterative Image Generation: Utilizes the BFL FLUX.1 Kontext model for context-aware image editing, ensuring consistency day-to-day.
+**Iterative Image Generation:** Utilizes the BFL FLUX.1 Kontext model for context-aware image editing, ensuring consistency day-to-day.
 
-State Management: Uses Google Sheets to store daily prompts and track historical changes.
+**State Management:** Uses Google Sheets to store daily prompts and track historical changes.
 
-Notifications: Sends the updated daily garden image via Telegram.
+**Notifications:** Sends the updated daily garden image via Telegram.
 
-Automation: Designed to run automatically on a daily schedule.
+**Automation:** Designed to run automatically on a daily schedule.
 
-How It Works
-Trigger: The workflow is initiated either manually or via a daily schedule.
+## How It Works
+**Trigger: ** The workflow is initiated either manually or via a daily schedule.
 
-Fetch Oura Data: The workflow connects to the Oura API to retrieve the latest Activity, Readiness, and Sleep summaries.
+**Fetch Oura Data: **The workflow connects to the Oura API to retrieve the latest Activity, Readiness, and Sleep summaries.
 
-Data Interpretation (The Digital Garden): A custom JavaScript node (Code1) processes the Oura scores. It calculates a 1-5 rating for different aspects of well-being and maps them to predefined visual descriptions of garden elements.
+**Data Interpretation** (The Digital Garden): A custom JavaScript node (Code1) processes the Oura scores. It calculates a 1-5 rating for different aspects of well-being and maps them to predefined visual descriptions of garden elements.
 
-State Management:
+**State Management:**
 
 The workflow reads the previous day's visual descriptions from a Google Sheet.
 
@@ -53,7 +53,7 @@ Change Detection: The workflow (Code2) compares today's descriptions with yester
 
 AI Prompt Composition: The identified changes are fed into a LangChain agent (Change Composer) powered by Google Gemini. This agent is instructed to write iterative editing prompts focusing only on the required modifications (e.g., "Make the stream flow faster. LEAVE ANYTHING ELSE EXACTLY LIKE IT IS NOW.")
 
-Image Generation (FLUX.1 Kontext):
+**Image Generation (FLUX.1 Kontext):**
 
 The workflow loads the image generated on the previous day from the n8n server's local storage.
 
@@ -63,7 +63,7 @@ The workflow polls the API until the image processing is complete.
 
 Output: The newly generated image is downloaded, saved locally (overwriting the old image, ready for the next day's iteration), and sent to the user via Telegram.
 
-The Digital Garden Metaphor
+## The Digital Garden Metaphor
 The workflow uses the following mappings (rated 1-5) to translate biometric data into visual elements. The logic and descriptions are defined in the Code1 node.
 
 Element	Domain	Description (Summary)
@@ -91,7 +91,7 @@ Black Forest Labs (BFL) API: An account and API key for the FLUX.1 Kontext model
 
 Telegram: A Bot Token and the Chat ID where you want to receive the images.
 
-Setup Instructions
+## Setup Instructions
 1. Import the Workflow
 Copy the workflow JSON from the Workflow JSON section below and paste it into a new workflow canvas in your n8n editor.
 
