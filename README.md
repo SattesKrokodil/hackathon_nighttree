@@ -150,3 +150,6 @@ Usage and Scheduling
 Manual Execution: You can use the When clicking ‘Execute workflow’ trigger to test the workflow.
 
 Automatic Execution: Activate the Schedule Trigger node and set it to run once per day (e.g., every morning at 8 AM) after your Oura data has synchronized.
+
+<img width="1024" height="1024" alt="dead" src="https://github.com/user-attachments/assets/5cf4fe00-5996-410b-9786-953c92550ab4" />
+
