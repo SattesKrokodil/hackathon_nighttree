@@ -1,4 +1,4 @@
-## biomeTREEcs
+## biomeTREEx
 Overview
 This sophisticated n8n workflow automatically generates and iteratively updates a "Digital Biometric Garden" image based on your daily health data from the Oura Ring. It translates metrics like sleep, readiness, and activity into elements of a virtual garden.
 
