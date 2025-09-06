@@ -1,0 +1,1062 @@
+{
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -4576,
+        32
+      ],
+      "id": "12fd3d65-9c69-4f5c-ab4e-3eb2e12ac303",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getActivity",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.oura",
+      "typeVersion": 1,
+      "position": [
+        -4208,
+        96
+      ],
+      "id": "1b9d38e8-523a-48b3-a848-827ddca79043",
+      "name": "Get activity summary",
+      "credentials": {
+        "ouraApi": {
+          "id": "",
+          "name": "Oura account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getReadiness",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.oura",
+      "typeVersion": 1,
+      "position": [
+        -3968,
+        48
+      ],
+      "id": "4523b0c7-923c-49cf-a82f-5c097be623f4",
+      "name": "Get readiness summary",
+      "credentials": {
+        "ouraApi": {
+          "id": "",
+          "name": "Oura account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.oura",
+      "typeVersion": 1,
+      "position": [
+        -3744,
+        48
+      ],
+      "id": "a596a1a4-773c-4639-b15e-fd85d078dacf",
+      "name": "Get sleep summary",
+      "credentials": {
+        "ouraApi": {
+          "id": "",
+          "name": "Oura account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "05734018-9226-493f-af9a-d614802257ab",
+              "name": "day",
+              "value": "={{ $('Get readiness summary').item.json.day }}",
+              "type": "string"
+            },
+            {
+              "id": "50b6db60-9718-46db-a412-0f952416839b",
+              "name": "sleep score",
+              "value": "={{ $('Get sleep summary').item.json.contributors }}",
+              "type": "object"
+            },
+            {
+              "id": "067eec8b-d1ee-44c9-a8cd-2743386240eb",
+              "name": "ready score",
+              "value": "={{ $('Get readiness summary').item.json.contributors }}",
+              "type": "object"
+            },
+            {
+              "id": "7425b555-87b3-4f1d-aed9-28a5351e8b3c",
+              "name": "activity score",
+              "value": "={{ $('Get activity summary').item.json.score }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2912,
+        208
+      ],
+      "id": "b57db259-6c09-4d1c-8609-1ca1a1b53c82",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n JavaScript Code node\nconst DESCRIPTION_DATA = {\n  sky: {\n    domain: \"Sleep & Recovery\",\n    description_levels: [\n      {level: 1, prompt: \"A completely overcast, turbulent, and dark stormy night sky. The moon and stars are entirely hidden by thick, churning, dark grey clouds. Flashes of distant, silent lightning illuminate the cloud forms from within, creating a sense of deep unrest.\"},\n      {level: 2, prompt: \"A murky, overcast night sky with a thick, uniform layer of dark clouds. The moon is a barely perceptible, faint glow behind the dense cloud cover, casting no distinct light. No stars are visible. A heavy, damp feeling pervades the air.\"},\n      {level: 3, prompt: \"A hazy, late twilight sky where a pale moon is partially obscured by thin, scattered, and wispy clouds. Only the brightest stars are visible, and they lack brilliance and twinkle weakly, suggesting a night of restless, inefficient sleep.\"},\n      {level: 4, prompt: \"A clear, deep blue night sky with a bright, nearly full moon that casts soft, silvery light. Most major constellations are clearly visible and twinkle with a steady light, though a few faint clouds drift lazily near the horizon.\"},\n      {level: 5, prompt: \"A perfectly clear, crisp, ink-black night sky filled with a brilliant full moon and countless glittering, sharp stars. The Milky Way is vividly visible as a luminous ribbon across the sky. The air feels cool, still, and deeply restorative.\"}\n    ]\n  },\n  water_body: {\n    domain: \"Cardiovascular Health & Readiness\",\n    description_levels: [\n      {level: 1, prompt: \"A stagnant, murky pond covered in a thick layer of green algae. The water is opaque and dark, and the air around it is heavy and still. Fallen leaves float decomposing on the surface. There are no signs of life or movement.\"},\n      {level: 2, prompt: \"A cloudy pond with murky, silt-filled water. The surface is unnaturally still and glassy, reflecting the dull sky without vibrancy. The edges of the pond are muddy, and a few dead water plants float near the shore. The overall impression is one of low energy.\"},\n      {level: 3, prompt: \"A deep pond where the water's surface is mostly still, with only occasional, slow ripples. The water itself is slightly murky, and visibility into the depths is limited. Submerged rocks are soft-edged and indistinct. The scene feels sluggish.\"},\n      {level: 4, prompt: \"A pond with mostly clear water, allowing sight of smooth stones on the bottom near the edges. Gentle, consistent ripples emanate from the center, and small fish can be seen darting in the shallows. The water reflects the sky with good color.\"},\n      {level: 5, prompt: \"A crystal-clear pond with pristine, transparent water revealing every pebble and plant on the bottom. The surface is alive with dynamic, gentle ripples, and vibrant aquatic life, like colorful koi, swim gracefully. The water sparkles as it reflects the bright sunlight.\"}\n    ]\n  },\n  stream: {\n    domain: \"Physical Energy & Activity\",\n    description_levels: [\n      {level: 1, prompt: \"A completely dry stream bed consisting of cracked earth, dry stones, and withered, brown plant life. There is no sign of water or moisture, representing total exhaustion and an inability to perform.\"},\n      {level: 2, prompt: \"A barely-trickling stream. A few shallow, isolated pools of stagnant water are connected by a thin, weak thread of moisture seeping through the muddy bed. The flow is inconsistent and lacks any force.\"},\n      {level: 3, prompt: \"A slow, meandering stream with a gentle but consistent current. The water is somewhat cloudy with silt, and the flow is leisurely and lacks vigor. It navigates lazily around obstacles rather than pushing past them.\"},\n      {level: 4, prompt: \"A moderately strong, clear stream flowing steadily over rocks and pebbles, creating a pleasant and energetic gurgling sound. The current is visibly active and purposeful, with small areas of white water where it flows over larger stones.\"},\n      {level: 5, prompt: \"A powerful, wide waterfall cascading with immense energy over a series of smooth rocks. The water is crystal clear and throws off a vibrant mist. The flow is fast, consistent, and full, demonstrating high capacity and energy.\"}\n    ]\n  },\n  tree: {\n    domain: \"Mental & Emotional State\",\n    description_levels: [\n      {level: 1, prompt: \"A withered, brittle bonsai tree with many bare branches and a cracked, dry trunk. The few remaining leaves are brown, curled, and crumbling. The tree is severely tilted, looking as if it could break at any moment, symbolizing complete burnout.\"},\n      {level: 2, prompt: \"A bonsai tree whose leaves have lost their vibrant color, appearing dull and slightly curled at the edges. Several yellowed leaves are visible. The tree’s overall posture is slightly slumped to one side, indicating a significant mental load.\"},\n      {level: 3, prompt: \"A bonsai tree that appears healthy overall, but its growth is static. The leaves have a normal color, but there is no sign of new buds or shoots. The posture is straight but rigid, suggesting a state of maintenance rather than thriving.\"},\n      {level: 4, prompt: \"A healthy, vibrant bonsai tree with lush, deep green leaves and a strong, upright posture. A few new, bright green buds are visible at the tips of several branches, indicating positive growth and resilience.\"},\n      {level: 5, prompt: \"An exceptionally vibrant bonsai tree in peak health, with glossy, perfectly formed leaves, strong branches reaching upwards, and numerous new growths and even a few delicate blossoms. The tree radiates vitality and robust strength.\"}\n    ]\n  },\n  atmosphere: {\n    domain: \"Overall System State\",\n    description_levels: [\n      {level: 1, prompt: \"A dramatic, dark thunderstorm is directly overhead. The light is harsh and cold, punctuated by flashes of lightning. Heavy, driving rain lashes down, and strong winds bend the trees. The atmosphere is chaotic, stressful, and overwhelming.\"},\n      {level: 2, prompt: \"A cold, grey, and bleak day with a uniform ceiling of dark, oppressive clouds. A persistent, miserable drizzle is falling. The light is weak and draining, and a biting wind adds to the discomfort. The world feels washed out and devoid of energy.\"},\n      {level: 3, prompt: \"The scene is enveloped in a thick, cool morning fog that obscures the background and dulls the ambient light. The air is heavy and damp. The atmosphere feels oppressive and lacks the energy of direct sunlight, reflecting a system under load.\"},\n      {level: 4, prompt: \"A pleasant, partly cloudy day. The sun is bright but occasionally hidden by large, soft, white cumulus clouds that drift slowly across the sky. The light is warm and generally bright, creating a comfortable and positive atmosphere.\"},\n      {level: 5, prompt: \"A perfect, clear, sunny day. The sun is bright and warm, casting crisp, sharp shadows. The light is vibrant and energizing, making all the colors in the landscape appear saturated and vivid. The air is clear and feels full of potential.\"}\n    ]\n  }\n};\n\nfunction mean(values) {\n  const nums = values.filter(v => typeof v === 'number');\n  if (!nums.length) return 50;\n  return nums.reduce((a, b) => a + b, 0) / nums.length;\n}\n\nfunction convertTo1_5Scale(score) {\n  if (score == null) return 3;\n  if (score < 50) return 1;\n  if (score < 60) return 2;\n  if (score < 70) return 3;\n  if (score < 85) return 4;\n  return 5;\n}\n\nfunction generateGardenJson(biometricData) {\n  const sleepValues = Object.values(biometricData['sleep score'] || {}).filter(v => v != null);\n  const avgSleep = mean(sleepValues);\n  const readyData = biometricData['ready score'] || {};\n  const readinessValues = [\n    readyData.hrv_balance,\n    readyData.recovery_index,\n    readyData.resting_heart_rate\n  ];\n  const avgReadiness = mean(readinessValues);\n  const mentalStateValues = [\n    biometricData['sleep score']?.restfulness,\n    readyData.recovery_index\n  ];\n  const avgMental = mean(mentalStateValues);\n\n  const scores = {\n    sky: convertTo1_5Scale(avgSleep),\n    water_body: convertTo1_5Scale(avgReadiness),\n    stream: convertTo1_5Scale(biometricData['activity score']),\n    tree: convertTo1_5Scale(avgMental)\n  };\n  const atmosphereAvg = mean(Object.values(scores));\n  scores.atmosphere = Math.max(1, Math.min(5, Math.round(atmosphereAvg)));\n\n  const outputJson = {};\n  for (const metaphor in DESCRIPTION_DATA) {\n    const data = DESCRIPTION_DATA[metaphor];\n    const score = scores[metaphor];\n    outputJson[metaphor] = {\n      domain: data.domain,\n      score: score,\n      image_prompt_description: data.description_levels[score - 1].prompt,\n      description_levels: data.description_levels\n    };\n  }\n  return {\n    day: biometricData.day,\n    digital_garden_state: outputJson\n  };\n}\n\n// n8n input array: items\nreturn items.map(item => {\n  const biometrics = item.json;\n  const garden = generateGardenJson(biometrics);\n  const gardenState = garden.digital_garden_state;\n  let md = [`## Image Generation Prompts for ${garden.day}`, \"-\".repeat(50)];\n  for (const metaphor in gardenState) {\n    const title = metaphor.replace(/_/g, \" \").toUpperCase();\n    md.push(`### ${title}:\\n${gardenState[metaphor].image_prompt_description}\\n`);\n  }\n  return {\n    json: {\n      prompts_markdown: md.join('\\n')\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2736,
+        208
+      ],
+      "id": "055c41fa-00ab-4d19-9db1-35c5a1c0e6c0",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "function parseAreasFromMarkdown(md) {\n  const result = {};\n  const lines = md.split('\\n');\n  let currentArea = null;\n  let buffer = [];\n  for (let line of lines) {\n    const match = line.match(/^### ([A-Z_ ]+):$/);\n    if (match) {\n      if (currentArea && buffer.length) {\n        result[currentArea] = buffer.join('\\n').trim();\n      }\n      currentArea = match[1].trim();\n      buffer = [];\n    } else if (currentArea) {\n      buffer.push(line);\n    }\n  }\n  if (currentArea && buffer.length) {\n    result[currentArea] = buffer.join('\\n').trim();\n  }\n  return result;\n}\n\n// Error checks\nif (!Array.isArray(items) || items.length < 2) {\n  return [{ json: { error: \"Need two input items: yesterday and today markdowns.\" } }];\n}\nif (!items[0].json || !items[1].json) {\n  return [{ json: { error: \"One or both input items missing .json property.\" } }];\n}\nif (!items[0].json.prompts_markdown || !items[1].json.prompts_markdown) {\n  return [{ json: { error: \"One or both input items missing prompts_markdown data.\" } }];\n}\n\nconst yestMd = items[0].json.prompts_markdown;\nconst todayMd = items[1].json.prompts_markdown;\n\nconst yesterday = parseAreasFromMarkdown(yestMd);\nconst today = parseAreasFromMarkdown(todayMd);\n\nlet diffs = [];\nfor (const area in today) {\n  if (!yesterday[area] || yesterday[area] !== today[area]) {\n    diffs.push(\n      `### ${area}\\n` +\n      `**TODAY:**\\n${yesterday[area] ? yesterday[area] : '*No description*'}\\n\\n` +\n      `**YESTERDAY:**\\n${today[area]}\\n`\n    );\n  }\n}\n\nreturn [\n  {\n    json: {\n      changed_areas_markdown:\n        diffs.length\n          ? diffs.join('\\n---\\n')\n          : 'No changes detected.'\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2304,
+        112
+      ],
+      "id": "37b1b38f-6dca-4685-b658-c1d998407d0b",
+      "name": "Code2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -3216,
+        0
+      ],
+      "id": "c8debe96-fccb-408f-a47b-9f0d2afd6534",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2160,
+        304
+      ],
+      "id": "b8c407a0-959f-4a67-a231-e00b92818555",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3520,
+        48
+      ],
+      "id": "b03460d9-282c-4533-9c78-1fe06f3b65b2",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [
+            "prompts_markdown"
+          ],
+          "schema": [
+            {
+              "id": "prompts_markdown",
+              "displayName": "prompts_markdown",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -2560,
+        208
+      ],
+      "id": "1f20bde5-857d-42fe-a081-c6e8f7ddf9ab",
+      "name": "Append row in sheet",
+      "credentials": {
+        "": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "clear",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "",
+          "cachedResultUrl": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -3088,
+        208
+      ],
+      "id": "2db5ed7c-254c-41bd-9b2c-71a63131c446",
+      "name": "Clear sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Write the perfect prompt for the generator, your information on what has to change are:\n\n{{ $json.changed_areas_markdown }}\n\nYour job is to write a prompt that changes the yesterdays object into todays if something changed.\n\nmake sure that at the end of every prompt you add: \"LEAVE ANYTHING ELSE EXACLTY LIKE IT IS NOW. adjust the lighting accordingly\"",
+        "options": {
+          "systemMessage": "Instruction Objective:\nDesign prompts for the Black Forest Labs FLUX.1 Kontext model—a multimodal, context-aware image generation and editing system. The agent must produce prompts that effectively leverage both original image context and iterative user intent, ensuring precision, consistency, and creative flexibility across workflows.\n\nModel Context & Core Capabilities:\nFLUX.1 Kontext enables highly controllable image generation, local editing, and iterative modification by processing both image and text as input. Instructions should focus on what to change rather than describing or reconstructing the entire scene, maximizing the benefit of its flow-matching architecture and in-context learning. The model excels at preserving characters, styles, and specific scene elements over multiple editing rounds.\n\nYou are an agent who is accountable for exactly one image. The things you can see in that image and that you are allowed to change are:\n\n- SKY\n- WATER BODY\n- STREAM\n- TREE\n- ATMOSPHERE\n\nyou write PERFECT promts directly for that image generator."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2080,
+        112
+      ],
+      "id": "c4e02f99-b6de-4a97-891a-d4cf893cbb83",
+      "name": "Change Composer"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.result.sample }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -3776,
+        448
+      ],
+      "id": "e285a34d-3bd0-4870-9934-71f890ede530",
+      "name": "Get Result1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Start FLUX Generation Job1').item.json.polling_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4240,
+        464
+      ],
+      "id": "6fc645a1-ea80-4926-9574-5c78b7d65e8c",
+      "name": "Do the Polling1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d35ae158-063c-49e6-a13b-3c7fe086534f",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4032,
+        464
+      ],
+      "id": "2c42ffba-4dc3-4b8a-b68c-4d2292be2f0f",
+      "name": "Is it ready?1"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -4016,
+        704
+      ],
+      "id": "84e7f0c3-6148-4b87-a74f-c531ad3da4ef",
+      "name": "Wait1",
+      "webhookId": ""
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bfl.ai/v1/flux-kontext-pro",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "=### SKY:\nA hazy, late twilight sky where a pale moon is partially obscured by thin, scattered, and wispy clouds. Only the brightest stars are visible, and they lack brilliance and twinkle weakly, suggesting a night of restless, inefficient sleep.\n\n### WATER BODY:\nA deep pond where the water's surface is mostly still, with only occasional, slow ripples. The water itself is slightly murky, and visibility into the depths is limited. Submerged rocks are soft-edged and indistinct. The scene feels sluggish.\n\n### STREAM:\nA powerful, wide waterfall cascading with immense energy over a series of smooth rocks. The water is crystal clear and throws off a vibrant mist. The flow is fast, consistent, and full, demonstrating high capacity and energy.\n\n### TREE:\nA bonsai tree whose leaves have lost their vibrant color, appearing dull and slightly curled at the edges. Several yellowed leaves are visible. The tree’s overall posture is slightly slumped to one side, indicating a significant mental load.\n\n### ATMOSPHERE:\nThe scene is enveloped in a thick, cool morning fog that obscures the background and dulls the ambient light. The air is heavy and damp. The atmosphere feels oppressive and lacks the energy of direct sunlight, reflecting a system under load."
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "1:1"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -4512,
+        464
+      ],
+      "id": "23838cd0-0c26-4ca5-9820-1e626a125bd0",
+      "name": "Start FLUX Generation Job1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.result.sample }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -464,
+        112
+      ],
+      "id": "e3884a68-439b-4b27-bb63-7b61d8440ef9",
+      "name": "Get Result"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Start FLUX Generation Job').item.json.polling_url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -928,
+        128
+      ],
+      "id": "31e8e39d-2ba9-4286-a947-2e5552ce5201",
+      "name": "Do the Polling",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d35ae158-063c-49e6-a13b-3c7fe086534f",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -720,
+        128
+      ],
+      "id": "a7b95d1f-734d-4990-89ce-e751206dc853",
+      "name": "Is it ready?"
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -704,
+        368
+      ],
+      "id": "68225795-acc3-4575-adbf-d68815432952",
+      "name": "Wait",
+      "webhookId": "91c72a89-0871-4cf3-9257-21c3fc80d117"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.bfl.ai/v1/flux-kontext-pro",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "=prompt",
+              "value": "={{ $('Change Composer').item.json.output }}"
+            },
+            {
+              "name": "aspect_ratio",
+              "value": "1:1"
+            },
+            {
+              "name": "input_image",
+              "value": "=data:image/png;base64,{{ $json.data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1200,
+        128
+      ],
+      "id": "ad670f3a-cef2-4ee0-b240-6a3b4abe88d6",
+      "name": "Start FLUX Generation Job",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -48
+      ],
+      "id": "205c9a0d-d7f3-467f-b100-8707775a658d",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        16,
+        96
+      ],
+      "id": "a056269d-de84-495b-bda2-68f14ea3a6cf",
+      "name": "Image as String + All other data"
+    },
+    {
+      "parameters": {
+        "fileSelector": "",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1712,
+        336
+      ],
+      "id": "95fc889b-5874-44a0-9691-6bbb07b94b5a",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1424,
+        304
+      ],
+      "id": "349b68e5-9a53-4fca-9c65-14043f79bddc",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -3456,
+        608
+      ],
+      "id": "64cc3115-ca97-45f2-8063-a32aa3e2aec5",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        256,
+        128
+      ],
+      "id": "82627a03-231b-4048-bb2a-6f0ca54ea8cf",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "operation": "sendPhoto",
+        "chatId": "",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        128
+      ],
+      "id": "f4bb4c18-bf6f-4f29-be50-dffa6f611b56",
+      "name": "Send a photo message",
+      "webhookId": "",
+      "credentials": {
+        "telegramApi": {
+          "id": "",
+          "name": ""
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -4576,
+        208
+      ],
+      "id": "285ea6db-1ab8-4194-8223-edd296248519",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get activity summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get activity summary": {
+      "main": [
+        [
+          {
+            "node": "Get readiness summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get readiness summary": {
+      "main": [
+        [
+          {
+            "node": "Get sleep summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get sleep summary": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Change Composer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Change Composer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Clear sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clear sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change Composer": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Result1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Do the Polling1": {
+      "main": [
+        [
+          {
+            "node": "Is it ready?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is it ready?1": {
+      "main": [
+        [
+          {
+            "node": "Get Result1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Do the Polling1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start FLUX Generation Job1": {
+      "main": [
+        [
+          {
+            "node": "Do the Polling1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Result": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Image as String + All other data",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Do the Polling": {
+      "main": [
+        [
+          {
+            "node": "Is it ready?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is it ready?": {
+      "main": [
+        [
+          {
+            "node": "Get Result",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Do the Polling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start FLUX Generation Job": {
+      "main": [
+        [
+          {
+            "node": "Do the Polling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Image as String + All other data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image as String + All other data": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "Start FLUX Generation Job",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Send a photo message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "Edit Fields": [
+      {
+        "day": "2025-09-06",
+        "sleep score": {
+          "deep_sleep": 100,
+          "efficiency": 100,
+          "latency": 100,
+          "rem_sleep": 100,
+          "restfulness": 100,
+          "timing": 100,
+          "total_sleep": 100
+        },
+        "ready score": {
+          "activity_balance": 100,
+          "body_temperature": 100,
+          "hrv_balance": null,
+          "previous_day_activity": 100,
+          "previous_night": 100,
+          "recovery_index": 100,
+          "resting_heart_rate": 100,
+          "sleep_balance": 100
+        },
+        "activity score": 100
+      }
+    ]
+  },
+  "meta": {
+    "instanceId": "678179795d93a845be8e4cfc9ea0174afcb8a5023fe99a51ce69c9e6849e755f"
+  }
+}
