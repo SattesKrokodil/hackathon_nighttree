@@ -40,6 +40,9 @@ Workflow JSON
 
 **Notifications:** Sends the updated daily garden image via Telegram.
 
+<img width="1259" height="822" alt="Screenshot 2025-09-06 163713" src="https://github.com/user-attachments/assets/64d200f4-6599-4bbf-9e29-4edbcc501211" />
+
+
 **Automation:** Designed to run automatically on a daily schedule.
 
 ## How It Works
