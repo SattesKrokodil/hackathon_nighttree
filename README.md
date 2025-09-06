@@ -4,6 +4,12 @@ This sophisticated n8n workflow automatically generates and iteratively updates 
 
 The key feature of this workflow is its iterative nature. Instead of generating a new image from scratch each day, it analyzes how your biometric data has changed. It uses Google Gemini to compose precise editing instructions for the Black Forest Labs (BFL) FLUX.1 Kontext image model. FLUX.1 then modifies the previous day's image to reflect the new state, creating a consistent, evolving visual narrative of your health journey.
 
+<img width="1024" height="1024" alt="test" src="https://github.com/user-attachments/assets/aa527ba2-f384-4b9d-a84a-9b1841e2f857" />
+
+<img width="1024" height="1024" alt="current" src="https://github.com/user-attachments/assets/14e48b25-80a0-4034-91ae-f3992e702a70" />
+
+
+
 ## Table of Contents
 Features
 How It Works
