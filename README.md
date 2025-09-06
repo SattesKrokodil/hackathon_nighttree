@@ -4,7 +4,7 @@ This sophisticated n8n workflow automatically generates and iteratively updates 
 
 The key feature of this workflow is its iterative nature. Instead of generating a new image from scratch each day, it analyzes how your biometric data has changed. It uses Google Gemini to compose precise editing instructions for the Black Forest Labs (BFL) FLUX.1 Kontext image model. FLUX.1 then modifies the previous day's image to reflect the new state, creating a consistent, evolving visual narrative of your health journey.
 
-Table of Contents
+## bTable of Contents
 Features
 How It Works
 The Digital Garden Metaphor
@@ -21,8 +21,8 @@ Initialization: Generating the First Image (Critical Step)
 Usage and Scheduling
 Workflow JSON
 
-Features
-Oura Ring Integration: Automatically fetches Sleep, Readiness, and Activity summaries.
+## bFeatures
+### bOura Ring Integration: Automatically fetches Sleep, Readiness, and Activity summaries.
 
 Biometric Mapping: Translates complex health data into visual metaphors (the "Digital Garden").
 
