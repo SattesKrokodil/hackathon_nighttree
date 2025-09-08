@@ -1,6 +1,7 @@
 ## biomeTREEx
-Overview
-This sophisticated n8n workflow automatically generates and iteratively updates a "Digital Biometric Garden" image based on your daily health data from the Oura Ring. It translates metrics like sleep, readiness, and activity into elements of a virtual garden.
+
+**Overview**
+This n8n workflow automatically generates and iteratively updates a "Digital Biometric Garden" image based on your daily health data from the Oura Ring. It translates metrics like sleep, readiness, and activity into elements of a virtual garden.
 
 The key feature of this workflow is its iterative nature. Instead of generating a new image from scratch each day, it analyzes how your biometric data has changed. It uses Google Gemini to compose precise editing instructions for the Black Forest Labs (BFL) FLUX.1 Kontext image model. FLUX.1 then modifies the previous day's image to reflect the new state, creating a consistent, evolving visual narrative of your health journey.
 
@@ -46,9 +47,9 @@ Workflow JSON
 **Automation:** Designed to run automatically on a daily schedule.
 
 ## How It Works
-**Trigger: ** The workflow is initiated either manually or via a daily schedule.
+**Trigger:** The workflow is initiated either manually or via a daily schedule.
 
-**Fetch Oura Data: **The workflow connects to the Oura API to retrieve the latest Activity, Readiness, and Sleep summaries.
+**Fetch Oura Data:** The workflow connects to the Oura API to retrieve the latest Activity, Readiness, and Sleep summaries.
 
 **Data Interpretation** (The Digital Garden): A custom JavaScript node (Code1) processes the Oura scores. It calculates a 1-5 rating for different aspects of well-being and maps them to predefined visual descriptions of garden elements.
 
